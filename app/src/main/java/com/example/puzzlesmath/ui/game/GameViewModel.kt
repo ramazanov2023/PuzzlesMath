@@ -9,8 +9,4 @@ class GameViewModel : ViewModel() {
 
     val puzzles = Puzzles()
 
-    init {
-        puzzles.getPuzzleTasks()
-    }
-
 }

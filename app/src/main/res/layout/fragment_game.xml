@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -14,10 +15,37 @@
 
         <com.example.puzzlesmath.ui.board.PuzzlesView
             android:id="@+id/puzzle_board"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/puzzle_recycler"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="4"
+            app:puzzleList="@{viewModel.puzzles.puzzlesLiveData}"
+            tools:itemCount="20"
+            tools:listitem="@layout/item_puzzle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/puzzles_btn"
+            android:text="PUZZLES"
+            android:textSize="20dp"
+            app:layout_constraintTop_toBottomOf="@id/puzzle_recycler"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!--<com.example.puzzlesmath.ui.board.TestBitmapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,5 +1,8 @@
 package com.example.puzzlesmath.ui.board
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -10,12 +13,15 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.DecelerateInterpolator
+import com.example.puzzlesmath.R
 
 class PuzzlesView(context: Context,attrs:AttributeSet):View(context,attrs) {
     private var sizePuzzle = 0F
     private var rowPuzzle = 5
     private var colPuzzle = 4
     private var puzzles = Puzzles()
+    private var newAnim: ValueAnimator = ValueAnimator()
 
     private val puzzle = Paint().apply {
         style = Paint.Style.FILL
@@ -27,6 +33,23 @@ class PuzzlesView(context: Context,attrs:AttributeSet):View(context,attrs) {
         style = Paint.Style.FILL_AND_STROKE
         color = Color.BLUE
         textSize = 36F
+    }
+
+    init {
+        setAnimation()
+    }
+
+    private fun setAnimation() {
+        val middleColor = resources.getColor(R.color.purple_200)
+        val endColor = resources.getColor(R.color.black)
+//        newAnim = ValueAnimator.ofArgb(middleColor, endColor)
+        newAnim = ValueAnimator.ofInt()
+        newAnim = ValueAnimator.ofFloat()
+        newAnim.duration = 200
+        newAnim.addUpdateListener {
+//            boardSelectCell.color = it.animatedValue as Int
+            postInvalidateOnAnimation()
+        }
     }
 
 
@@ -53,20 +76,6 @@ class PuzzlesView(context: Context,attrs:AttributeSet):View(context,attrs) {
         super.onDraw(canvas)
         sizePuzzle = (width/4).toFloat()
         Log.e("gggg","3  - width-$width  height-$height")
-        /*for(r in 0 until 5) {
-            for(c in 0 until 4){
-                shufflePuzzleColors()
-                canvas?.drawRoundRect(c*sizePuzzle,r*sizePuzzle,(c+1)*sizePuzzle,(r+1)*sizePuzzle,30F,30F,puzzle)
-                val taskTitle = sizePuzzle.toInt().toString()
-                val rect = Rect()
-                task.getTextBounds(sizePuzzle.toString(),0,taskTitle.length,rect)
-                val titleWidth = task.measureText(taskTitle)
-                val titleHeight = rect.height()
-
-                canvas?.drawText(taskTitle,c*sizePuzzle+(sizePuzzle/2)-(titleWidth/2),r*sizePuzzle+(sizePuzzle/2)+(titleHeight/2),task)
-            }
-        }*/
-
         drawPuzzles(canvas)
     }
 
@@ -96,5 +105,32 @@ class PuzzlesView(context: Context,attrs:AttributeSet):View(context,attrs) {
             false
         }
     }
+
+    /*private fun longModeSet() {
+        val titleSmall =
+            ObjectAnimator.ofFloat(binding.classicStartModeFirstName, "textSize", 34F, 46f).apply {
+                duration = 400
+                interpolator = DecelerateInterpolator()
+            }
+        val short = ObjectAnimator.ofFloat(binding.classicTopFrame, "scaleY", 1f).apply {
+            duration = 260
+            interpolator = DecelerateInterpolator()
+            // для scale необходимо установить pivot(в атрибутах или здесь,в коде)
+        }
+        val fadeLastNameMode =
+            ObjectAnimator.ofFloat(binding.classicStartModeLastName, "alpha", 1f).apply {
+                duration = 300
+                interpolator = DecelerateInterpolator()
+            }
+        val fadeDescriptionMode =
+            ObjectAnimator.ofFloat(binding.classicModeDescription, "alpha", 1f).apply {
+                duration = 300
+                interpolator = DecelerateInterpolator()
+            }
+        AnimatorSet().apply {
+            play(short).with(titleSmall).with(fadeLastNameMode).with(fadeDescriptionMode)
+            start()
+        }
+    }*/
 
 }
